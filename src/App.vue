@@ -1,18 +1,20 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <app-header companyName="esri" />
+    <people-container />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import HelloWorld from './components/HelloWorld.vue'
+import AppHeader from './AppHeader.vue';
+import PeopleContainer from './components/people/PeopleContainer.vue';
 
 export default Vue.extend({
   name: 'app',
   components: {
-    HelloWorld
+    AppHeader,
+    PeopleContainer
   }
 })
 </script>
