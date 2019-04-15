@@ -4,7 +4,8 @@
       <people-search @criteria-change="handleChange"/>
     </div>
     <div class="col">
-      <people-list :people="people" @row-click="showPersonDetail"/>
+      <div v-show="isLoading" id="loading"></div>
+      <people-list v-show="!isLoading" :people="people" @row-click="showPersonDetail"/>
     </div>
   </div>
 </template>
@@ -22,6 +23,7 @@ import peopleDao from "./people-fetch-service";
 interface PeopleManagerData {
   peopleCache: Person[];
   people: Person[];
+  isLoading: boolean;
 }
 
 export default Vue.extend({
@@ -32,6 +34,7 @@ export default Vue.extend({
     return {
       peopleCache: [],
       people: [],
+      isLoading: false,
     };
   },
   computed: {
@@ -41,15 +44,23 @@ export default Vue.extend({
   },
   methods: {
     fetchData(criteria?: PersonCriteria) {
+      this.isLoading = true;
       return peopleDao
         .search(criteria)
-        .then(people => (this.people = people))
+        .then(people => {
+          this.isLoading = false;
+          this.people = people;
+        })
         .catch(err => console.log("Could not fetch data"));
     },
     cacheData() {
+      this.isLoading = true;
       return peopleDao
         .search()
-        .then(people => (this.peopleCache = people))
+        .then(people => {
+          this.isLoading = false;
+          this.peopleCache = people;
+        })
         .catch(err => console.log("Could not fetch data"));
     },
     handleChangeDb(criteria: PersonCriteria) {
