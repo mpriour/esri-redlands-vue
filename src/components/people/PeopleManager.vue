@@ -5,7 +5,6 @@
     </div>
     <div class="col">
       <people-list :people="people" @row-click="showPersonDetail"/>
-      <person-detail-container :id="selectedId" :person="selectedPerson" />
     </div>
   </div>
 </template>
@@ -23,8 +22,6 @@ import peopleDao from "./people-fetch-service";
 interface PeopleManagerData {
   peopleCache: Person[];
   people: Person[];
-  selectedPerson?: Person;
-  selectedId?: string
 }
 
 export default Vue.extend({
@@ -35,8 +32,6 @@ export default Vue.extend({
     return {
       peopleCache: [],
       people: [],
-      selectedPerson: undefined,
-      selectedId: undefined,
     };
   },
   computed: {
@@ -88,7 +83,7 @@ export default Vue.extend({
       this.people = people;
     },
     showPersonDetail(person:Person){
-      this.selectedPerson = person;
+      this.$router.push(`/people/${person.id}`)
     }
   },
   created() {
